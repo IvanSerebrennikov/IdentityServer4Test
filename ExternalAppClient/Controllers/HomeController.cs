@@ -47,7 +47,7 @@ namespace ExternalAppClient.Controllers
 
                 ClientId = "externalApp1",
                 ClientSecret = "externalApp1secret",
-                Scope = "api1"
+                Scope = "apiOne"
             });
 
             if (tokenResponse.IsError)
