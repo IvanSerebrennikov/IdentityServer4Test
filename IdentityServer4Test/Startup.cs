@@ -33,7 +33,7 @@ namespace IdentityServer4Test
                     options.Authority = "https://localhost:5001";
                     options.RequireHttpsMetadata = true;
 
-                    options.Audience = "api1";
+                    options.Audience = "apiOne";
                 });
         }
 
