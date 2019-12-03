@@ -34,6 +34,13 @@ namespace IdentityServerMvc
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddIdentityServer()
+                .AddInMemoryIdentityResources(Config.Ids)
+                .AddInMemoryApiResources(Config.Apis)
+                .AddInMemoryClients(Config.Clients)
+                // not recommended for production - you need to store your key material somewhere secure
+                .AddDeveloperSigningCredential();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +61,8 @@ namespace IdentityServerMvc
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseIdentityServer();
 
             app.UseAuthentication();
             app.UseAuthorization();
