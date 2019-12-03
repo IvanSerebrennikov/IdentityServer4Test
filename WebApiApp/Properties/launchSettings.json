@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IdentityServer4Test": {
+    "WebApiApp": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",

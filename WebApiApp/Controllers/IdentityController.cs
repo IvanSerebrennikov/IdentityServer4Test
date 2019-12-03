@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentityServer4Test.Controllers
+namespace WebApiApp.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]

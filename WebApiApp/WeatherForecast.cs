@@ -1,6 +1,6 @@
 using System;
 
-namespace IdentityServer4Test
+namespace WebApiApp
 {
     public class WeatherForecast
     {
