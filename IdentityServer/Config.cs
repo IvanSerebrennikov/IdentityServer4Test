@@ -4,6 +4,7 @@
 
 using IdentityServer4.Models;
 using System.Collections.Generic;
+using IdentityServer4;
 
 namespace IdentityServer
 {
@@ -12,7 +13,8 @@ namespace IdentityServer
         public static IEnumerable<IdentityResource> Ids =>
             new IdentityResource[]
             { 
-                new IdentityResources.OpenId()
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile()
             };
 
         public static IEnumerable<ApiResource> Apis =>
@@ -26,6 +28,7 @@ namespace IdentityServer
         public static IEnumerable<Client> Clients =>
             new Client[]
             {
+                // machine to machine client
                 new Client
                 {
                     ClientId = "externalApp1",
@@ -41,6 +44,28 @@ namespace IdentityServer
 
                     // scopes that client has access to
                     AllowedScopes = { "apiOne", "apiTwo" }
+                },
+                // interactive ASP.NET Core MVC client
+                new Client
+                {
+                    ClientId = "MvcApp",
+                    ClientSecrets = { new Secret("MvcAppSecret".Sha256()) },
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireConsent = false,
+                    RequirePkce = true,
+
+                    // where to redirect to after login
+                    RedirectUris = { "https://localhost:8001" },
+
+                    // where to redirect to after logout
+                    PostLogoutRedirectUris = { "https://localhost:8001" },
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
+                    }
                 }
             };
         
