@@ -56,10 +56,10 @@ namespace IdentityServerMvc
                     RequirePkce = true,
 
                     // where to redirect to after login
-                    RedirectUris = { "https://localhost:8001" },
+                    RedirectUris = { "https://localhost:8001/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://localhost:8001" },
+                    PostLogoutRedirectUris = { "https://localhost:8001/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {

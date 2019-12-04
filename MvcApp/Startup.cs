@@ -43,6 +43,8 @@ namespace MvcApp
                     options.ClientSecret = "MvcAppSecret";
                     options.ResponseType = "code";
 
+                    options.GetClaimsFromUserInfoEndpoint = true;
+
                     options.SaveTokens = true;
                 });
         }
