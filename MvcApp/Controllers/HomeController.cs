@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MvcApp.Models;
+using Newtonsoft.Json.Linq;
 
 namespace MvcApp.Controllers
 {
@@ -40,6 +43,18 @@ namespace MvcApp.Controllers
             await HttpContext.SignOutAsync();
 
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> CallWebApiApp()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var content = await client.GetStringAsync("https://localhost:6001/api/identity");
+
+            ViewBag.Json = JArray.Parse(content).ToString();
+            return View("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

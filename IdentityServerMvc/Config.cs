@@ -1,8 +1,4 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using IdentityServer4;
 using IdentityServer4.Models;
 
@@ -64,8 +60,11 @@ namespace IdentityServerMvc
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    }
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "apiOne"
+                    },
+
+                    AllowOfflineAccess = true
                 }
             };
         

@@ -46,6 +46,9 @@ namespace MvcApp
                     options.GetClaimsFromUserInfoEndpoint = true;
 
                     options.SaveTokens = true;
+
+                    options.Scope.Add("apiOne");
+                    options.Scope.Add("offline_access");
                 });
         }
 
