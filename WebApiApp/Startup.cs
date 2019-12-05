@@ -42,6 +42,8 @@ namespace WebApiApp
             {
                 options.AddPolicy("apiOne", policy => policy.RequireClaim("scope", "apiOne"));
                 options.AddPolicy("apiTwo", policy => policy.RequireClaim("scope", "apiTwo"));
+                options.AddPolicy("apiThree", policy => policy.RequireClaim("scope", "apiThree"));
+                options.AddPolicy("apiFour", policy => policy.RequireClaim("scope", "apiFour"));
             });
         }
 

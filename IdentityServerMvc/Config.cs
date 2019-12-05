@@ -39,7 +39,7 @@ namespace IdentityServerMvc
                     },
 
                     // scopes that client has access to
-                    AllowedScopes = { "apiOne", "apiTwo" }
+                    AllowedScopes = { "apiOne", "apiThree", "apiFour" }
                 },
                 // interactive ASP.NET Core MVC client
                 new Client

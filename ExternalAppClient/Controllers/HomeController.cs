@@ -36,7 +36,7 @@ namespace ExternalAppClient.Controllers
 
         public async Task<IActionResult> GetToken()
         {
-            var client = new HttpClient();
+            using var client = new HttpClient();
             var identityServerUrl = "https://localhost:5001";
             var disco = await client.GetDiscoveryDocumentAsync(identityServerUrl);
             if (disco.IsError)
@@ -52,7 +52,10 @@ namespace ExternalAppClient.Controllers
 
                 ClientId = "externalApp1",
                 ClientSecret = "externalApp1secret",
-                Scope = "apiOne"
+                Scope = "apiOne apiThree" 
+
+                // If add 'apiFour' to Scope there will be error 'invalid_scope',
+                // because of 'apiFour' is not added as Identity Resource in IdentityServerMvc.Config
             });
 
             if (tokenResponse.IsError)
@@ -80,6 +83,16 @@ namespace ExternalAppClient.Controllers
         public async Task<IActionResult> AccessWebApiResourceTwo()
         {
             return await AccessWebApi("resources/resource-two");
+        }
+
+        public async Task<IActionResult> AccessWebApiResourceThree()
+        {
+            return await AccessWebApi("resources/resource-three");
+        }
+
+        public async Task<IActionResult> AccessWebApiResourceFour()
+        {
+            return await AccessWebApi("resources/resource-four");
         }
 
         private async Task<IActionResult> AccessWebApi(string accessUrl)

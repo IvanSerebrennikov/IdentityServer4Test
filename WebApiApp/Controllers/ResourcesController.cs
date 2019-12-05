@@ -26,5 +26,21 @@ namespace WebApiApp.Controllers
         {
             return new JsonResult(new { resource = "Two" });
         }
+
+        [HttpGet]
+        [Route("resource-three")]
+        [Authorize(Policy = "apiThree")]
+        public IActionResult GetResourceThree()
+        {
+            return new JsonResult(new { resource = "Three" });
+        }
+
+        [HttpGet]
+        [Route("resource-four")]
+        [Authorize(Policy = "apiFour")]
+        public IActionResult GetResourceFour()
+        {
+            return new JsonResult(new { resource = "Four" });
+        }
     }
 }
