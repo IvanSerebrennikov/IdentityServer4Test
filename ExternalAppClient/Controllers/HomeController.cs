@@ -34,14 +34,15 @@ namespace ExternalAppClient.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetTokenTest()
+        public async Task<IActionResult> GetToken()
         {
             var client = new HttpClient();
             var identityServerUrl = "https://localhost:5001";
             var disco = await client.GetDiscoveryDocumentAsync(identityServerUrl);
             if (disco.IsError)
             {
-                return Content(disco.Error);
+                ViewBag.WebApiResult = disco.Error;
+                return View("Index");
             }
 
             // request token
@@ -56,36 +57,56 @@ namespace ExternalAppClient.Controllers
 
             if (tokenResponse.IsError)
             {
-                return Content(disco.Error);
+                ViewBag.WebApiResult = tokenResponse.Error;
+                return View("Index");
             }
 
             _accessToken = tokenResponse.AccessToken;
 
-            return Content(tokenResponse.Json.ToString());
+            ViewBag.WebApiResult = tokenResponse.Json.ToString();
+            return View("Index");
         }
 
-        public async Task<IActionResult> UseTokenTest()
+        public async Task<IActionResult> AccessWebApiIdentity()
+        {
+            return await AccessWebApi("identity");
+        }
+
+        public async Task<IActionResult> AccessWebApiResourceOne()
+        {
+            return await AccessWebApi("resources/resource-one");
+        }
+
+        public async Task<IActionResult> AccessWebApiResourceTwo()
+        {
+            return await AccessWebApi("resources/resource-two");
+        }
+
+        private async Task<IActionResult> AccessWebApi(string accessUrl)
         {
             if (string.IsNullOrEmpty(_accessToken))
             {
-                return Content("Access Token is null");
+                ViewBag.WebApiResult = "Access Token is null";
+                return View("Index");
             }
 
             // call api
-            var client = new HttpClient();
+            using var client = new HttpClient();
             var apiUrl = "https://localhost:6001";
             client.SetBearerToken(_accessToken);
 
-            var response = await client.GetAsync($"{apiUrl}/api/identity");
+            var response = await client.GetAsync($"{apiUrl}/api/{accessUrl}");
             if (!response.IsSuccessStatusCode)
             {
-                return Content("Status code: " + response.StatusCode.ToString());
+                ViewBag.WebApiResult = $"Response is not OK. StatusCode: {response.StatusCode}";
             }
             else
             {
                 var content = await response.Content.ReadAsStringAsync();
-                return Content(JArray.Parse(content).ToString());
+                ViewBag.WebApiResult = JToken.Parse(content).ToString(Newtonsoft.Json.Formatting.Indented);
             }
+
+            return View("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -45,15 +45,47 @@ namespace MvcApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> CallWebApiApp()
+        public async Task<IActionResult> AccessWebApiIdentity()
+        {
+            return await AccessWebApi("identity");
+        }
+
+        public async Task<IActionResult> AccessWebApiResourceOne()
+        {
+            return await AccessWebApi("resources/resource-one");
+        }
+
+        public async Task<IActionResult> AccessWebApiResourceTwo()
+        {
+            return await AccessWebApi("resources/resource-two");
+        }
+
+        private async Task<IActionResult> AccessWebApi(string accessUrl)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var content = await client.GetStringAsync("https://localhost:6001/api/identity");
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                ViewBag.WebApiResult = "Access Token is null";
+                return View("Index");
+            }
 
-            ViewBag.Json = JArray.Parse(content).ToString();
+            // call api
+            using var client = new HttpClient();
+            var apiUrl = "https://localhost:6001";
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var response = await client.GetAsync($"{apiUrl}/api/{accessUrl}");
+            if (!response.IsSuccessStatusCode)
+            {
+                ViewBag.WebApiResult = $"Response is not OK. StatusCode: {response.StatusCode}";
+            }
+            else
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                ViewBag.WebApiResult = JToken.Parse(content).ToString(Newtonsoft.Json.Formatting.Indented);
+            }
+
             return View("Index");
         }
 

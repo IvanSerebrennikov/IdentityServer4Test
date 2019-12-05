@@ -37,6 +37,12 @@ namespace WebApiApp
                         }
                     };
                 });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("apiOne", policy => policy.RequireClaim("scope", "apiOne"));
+                options.AddPolicy("apiTwo", policy => policy.RequireClaim("scope", "apiTwo"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
