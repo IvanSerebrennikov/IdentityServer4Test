@@ -61,7 +61,7 @@ namespace IdentityServerMvc
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "apiOne"
+                        "apiTwo"
                     },
 
                     AllowOfflineAccess = true

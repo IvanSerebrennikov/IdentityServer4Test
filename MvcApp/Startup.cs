@@ -47,7 +47,7 @@ namespace MvcApp
 
                     options.SaveTokens = true;
 
-                    options.Scope.Add("apiOne");
+                    options.Scope.Add("apiTwo");
                     options.Scope.Add("offline_access");
                 });
         }

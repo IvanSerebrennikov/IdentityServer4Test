@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +27,15 @@ namespace WebApiApp
                     options.Authority = "https://localhost:5001";
                     options.RequireHttpsMetadata = true;
 
-                    options.Audience = "apiOne";
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidAudiences = new List<string> 
+                        {
+                            "apiOne",
+                            "apiTwo" 
+                        }
+                    };
                 });
         }
 
